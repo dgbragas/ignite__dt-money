@@ -1,3 +1,5 @@
+import { GlobalStyle } from './styles/global';
+
 export function App(): JSX.Element {
-  return <h1>Hello Rocketseat</h1>;
+  return <GlobalStyle />;
 }
