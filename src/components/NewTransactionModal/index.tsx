@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
+import { api } from '../../services/api';
 
 import * as S from './styles';
 
@@ -16,7 +17,23 @@ export function NewTransactionModal({
   onRequestClose,
   isOpen,
 }: NewTransactionModalProps): JSX.Element {
+  const [title, setTitle] = useState('');
+  const [value, setValue] = useState(0);
+  const [category, setCategory] = useState('');
   const [type, setType] = useState<'deposit' | 'withdraw'>('deposit');
+
+  function handleCreateNewTransaction(event: FormEvent) {
+    event.preventDefault();
+
+    const data = {
+      title,
+      value,
+      category,
+      type,
+    };
+
+    api.post('/transactions', data);
+  }
 
   return (
     <Modal
@@ -33,12 +50,23 @@ export function NewTransactionModal({
         <img src={closeImg} alt="Fechar modal" />
       </button>
 
-      <S.Container>
+      <S.Container onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar transação</h2>
 
-        <input placeholder="Título" />
+        <input
+          value={title}
+          onChange={({ target: { value: inputValue } }) => setTitle(inputValue)}
+          placeholder="Título"
+        />
 
-        <input type="number" placeholder="Valor" />
+        <input
+          value={value}
+          onChange={({ target: { value: inputValue } }) =>
+            setValue(Number(inputValue))
+          }
+          type="number"
+          placeholder="Valor"
+        />
 
         <S.TransactionTypeContainer>
           <S.RadioBox
@@ -62,7 +90,13 @@ export function NewTransactionModal({
           </S.RadioBox>
         </S.TransactionTypeContainer>
 
-        <input placeholder="Categoria" />
+        <input
+          value={category}
+          onChange={({ target: { value: inputValue } }) =>
+            setCategory(inputValue)
+          }
+          placeholder="Categoria"
+        />
 
         <button type="submit">Cadastrar</button>
       </S.Container>
