@@ -11,7 +11,7 @@ export interface ITransaction {
   createdAt: string;
 }
 
-interface TransactionsContextData {
+export interface ITransactionsContextData {
   transactions: ITransaction[];
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
@@ -22,8 +22,8 @@ interface TransactionsProviderProps {
 
 type TransactionInput = Omit<ITransaction, 'id' | 'createdAt'>;
 
-export const TransactionsContext = createContext<TransactionsContextData>(
-  {} as TransactionsContextData,
+export const TransactionsContext = createContext<ITransactionsContextData>(
+  {} as ITransactionsContextData,
 );
 
 export function TransactionsProvider({

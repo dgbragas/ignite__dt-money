@@ -1,12 +1,10 @@
-import { useContext } from 'react';
-
-import { TransactionsContext } from '../../contexts/TransactionsContext';
+import { useTransactions } from '../../hooks/useTransaction';
 
 import { SummaryCard } from './SummaryCard';
 import * as S from './styles';
 
 export function Summary(): JSX.Element {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransactions();
 
   const { deposits, total, withdraws } = transactions.reduce(
     (acc, transaction) => {
