@@ -1,26 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+
+import { TransactionsContext } from '../../contexts/TransactionsContext';
+
 import { Container } from './styles';
 
-import { api } from '../../services/api';
-
-interface Transaction {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-}
-
 export function TransactionsTable(): JSX.Element {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await api.get('transactions');
-      setTransactions(response.data.transactions);
-    })();
-  }, []);
+  const { transactions } = useContext(TransactionsContext);
 
   return (
     <Container>
@@ -39,6 +24,7 @@ export function TransactionsTable(): JSX.Element {
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
               <td className={transaction.type}>
+                {transaction.type === 'withdraw' && '-'}
                 {new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
