@@ -8,7 +8,7 @@ type IType = 'income' | 'outcome' | 'total';
 
 interface SummaryCardProps {
   title: string;
-  value: string | number;
+  value: number;
   type: IType;
 }
 
@@ -47,7 +47,13 @@ export function SummaryCard({
           alt={getSummaryCardIcon(type).altText}
         />
       </header>
-      <strong>{value}</strong>
+      <strong>
+        {type === 'outcome' && '-'}
+        {new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(value)}
+      </strong>
     </S.Container>
   );
 }
